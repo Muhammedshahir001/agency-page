@@ -10,22 +10,26 @@ const projects = [
   {
     title: "Aura Skincare",
     category: "E-Commerce",
-    image: "https://images.unsplash.com/photo-1612817288484-6f916006741a?q=80&w=2000&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1612817288484-6f916006741a?q=80&w=2000&auto=format&fit=crop",
   },
   {
     title: "Nova Tech",
     category: "Brand Identity",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop",
   },
   {
     title: "Vibe Energy",
     category: "Marketing",
-    image: "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=2000&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=2000&auto=format&fit=crop",
   },
   {
     title: "Elevate Real Estate",
     category: "Web Development",
-    image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2000&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2000&auto=format&fit=crop",
   },
 ];
 
@@ -61,7 +65,7 @@ function ProjectCard({ project }) {
         transformPerspective: 1200,
       }}
       whileHover={{ scale: 1.04 }}
-      className="relative min-w-[75vw] md:min-w-[45vw] lg:min-w-[35vw] h-[65vh] rounded-3xl overflow-hidden group cursor-pointer"
+      className="relative min-w-[85vw] md:min-w-[45vw] lg:min-w-[35vw] h-[65vh] rounded-3xl overflow-hidden group cursor-pointer"
     >
       {/* Glow layer */}
       <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition duration-500 blur-2xl bg-white/10"></div>
@@ -103,6 +107,12 @@ export default function Work() {
 
   useEffect(() => {
     const el = scrollRef.current;
+
+    const isMobile = window.innerWidth < 768;
+
+    // ❗ MOBILE: disable GSAP horizontal scroll
+    if (isMobile) return;
+
     const totalWidth = el.scrollWidth;
     const scrollDistance = totalWidth - window.innerWidth;
 
@@ -125,21 +135,18 @@ export default function Work() {
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative overflow-hidden"
-    >
-      {/* PREMIUM GRADIENT BACKGROUND */}
+    <section ref={sectionRef} className="relative overflow-hidden">
+      {/* BACKGROUND */}
       <div className="absolute inset-0 bg-gradient-to-b from-black via-neutral-900 to-white"></div>
 
-      {/* Glow lights */}
+      {/* GLOW */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute w-[500px] h-[500px] bg-white/10 blur-[120px] top-[-100px] left-[-100px]"></div>
         <div className="absolute w-[400px] h-[400px] bg-white/10 blur-[100px] bottom-[-100px] right-[-100px]"></div>
       </div>
 
       <div className="relative z-10">
-        {/* Header */}
+        {/* HEADER */}
         <div className="max-w-7xl mx-auto px-6 md:px-12 pt-24 pb-12">
           <h2 className="text-4xl md:text-6xl font-bold text-white mb-4">
             Selected Work
@@ -149,10 +156,15 @@ export default function Work() {
           </p>
         </div>
 
-        {/* Scroll Container */}
+        {/* SCROLL AREA */}
         <div
           ref={scrollRef}
-          className="flex items-center gap-10 px-6 md:px-12 h-[80vh]"
+          className="
+            flex items-center gap-10 px-6 md:px-12 
+            h-[80vh] 
+            overflow-x-auto md:overflow-visible 
+            scroll-smooth
+          "
         >
           {projects.map((project, i) => (
             <ProjectCard key={i} project={project} />
